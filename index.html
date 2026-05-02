@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dynamic Memory Management Visualizer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="h-left">
+    <div style="width:30px;height:30px;background:#4f8ef7;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">&#129504;</div>
+    <div>
+      <h1>Dynamic Memory Management Visualizer</h1>
+      <p>OS Project &mdash; Paging &middot; Segmentation &middot; Virtual Memory &middot; Allocation</p>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#334155;font-family:monospace">Space = VM step &nbsp;|&nbsp; R = Reset</div>
+</header>
+
+<div class="tabs">
+  <div class="tab on" onclick="go('pg',this)">&#128196; Paging</div>
+  <div class="tab" onclick="go('seg',this)">&#9638; Segmentation</div>
+  <div class="tab" onclick="go('vm',this)">&#128260; Virtual Memory</div>
+  <div class="tab" onclick="go('al',this)">&#128194; Allocation</div>
+</div>
+
+<!-- ═══ PAGING ═══ -->
+<div id="pg" class="page on">
+  <div class="theory"><b>Paging:</b> Physical memory split into fixed-size <b>frames</b> (16B here). Virtual memory split into same-size <b>pages</b>. A <b>page table</b> maps VPN&rarr;PFN. VA = VPN&times;PageSize + Offset &nbsp;|&nbsp; PA = PFN&times;PageSize + Offset</div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="ct">Virtual Address Translation</div>
+        <div style="margin-bottom:8px"><label>Virtual Address (0-255):</label><input type="number" id="pg-va" min="0" max="255" value="37" oninput="pgTrans()"></div>
+        <div id="pg-result" class="mono" style="background:#0a0c14;border:1px solid #1e2535;border-radius:5px;padding:9px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Page Table &mdash; <span id="pg-pname">P0</span></div>
+        <div style="display:flex;gap:4px;margin-bottom:8px">
+          <button id="ptb0" onclick="pgProc(0)" style="flex:1;border-color:#2563eb;color:#60a5fa">P0</button>
+          <button id="ptb1" onclick="pgProc(1)" style="flex:1">P1</button>
+          <button id="ptb2" onclick="pgProc(2)" style="flex:1">P2</button>
+        </div>
+        <div id="pg-pt" style="max-height:170px;overflow-y:auto"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Actions</div>
+        <button onclick="pgAlloc()">+ Alloc Page</button>
+        <button class="danger" onclick="pgFree()">&#8722; Free Page</button>
+        <button onclick="pgReset()">&#8635; Reset</button>
+        <div id="pg-log" class="log" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="proc-panel">
+        <div class="proc-title">&#9654; Translation Process</div>
+        <div id="pg-proc"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Physical Memory (16 frames &times; 16 B = 256 B)</div>
+        <div id="pg-mem"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Memory Stats</div>
+        <div id="pg-stats" class="statg"></div>
+        <span class="badge b-blue">Page=16B</span> <span class="badge b-amber">VPN bits=4</span> <span class="badge b-green">Offset bits=4</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SEGMENTATION ═══ -->
+<div id="seg" class="page">
+  <div class="theory"><b>Segmentation:</b> Memory divided into variable-size logical <b>segments</b> (Code, Data, Heap, Stack). Logical address = (segment#, offset). Segment table stores <b>base</b> and <b>limit</b> per segment. If offset &ge; limit &rarr; <b style="color:#f87171">Segmentation Fault</b>.</div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="ct">Logical Address Translation</div>
+        <div style="margin-bottom:6px"><label>Segment:</label>
+          <select id="seg-s" onchange="segTrans()">
+            <option value="0">0 - Code</option><option value="1">1 - Data</option>
+            <option value="2">2 - Heap</option><option value="3">3 - Stack</option>
+          </select>
+        </div>
+        <div style="margin-bottom:8px"><label>Offset:</label><input type="number" id="seg-o" min="0" value="20" oninput="segTrans()"></div>
+        <div id="seg-result" class="mono" style="background:#0a0c14;border:1px solid #1e2535;border-radius:5px;padding:9px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Segment Table</div>
+        <table><thead><tr><th>#</th><th>Name</th><th>Base</th><th>Limit</th><th>R</th><th>W</th><th>X</th></tr></thead>
+          <tbody id="seg-tbody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="ct">Resize Segment</div>
+        <select id="seg-rs"><option value="0">0-Code</option><option value="1">1-Data</option><option value="2">2-Heap</option><option value="3">3-Stack</option></select>
+        <label style="margin-left:6px">New limit:</label><input type="number" id="seg-rl" min="1" max="100" value="32">
+        <button onclick="segResize()" style="margin-left:4px">Resize</button>
+        <button onclick="segReset()">&#8635; Reset</button>
+        <div id="seg-log" class="log" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="proc-panel">
+        <div class="proc-title">&#9654; Translation Process</div>
+        <div id="seg-proc"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Physical Memory Layout (256 B)</div>
+        <div id="seg-bar" class="mbar"></div>
+        <div class="ruler"><span>0</span><span>64</span><span>128</span><span>192</span><span>256</span></div>
+        <div id="seg-legend" style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Fragmentation Stats</div>
+        <div id="seg-stats" class="statg"></div>
+        <div id="seg-holes" style="font-size:11px;color:#64748b;margin-top:4px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIRTUAL MEMORY ═══ -->
+<div id="vm" class="page">
+  <div class="theory"><b>Virtual Memory:</b> Processes use more memory than physically available. Pages swapped to disk on demand. <b>TLB</b> caches recent VPN&rarr;PFN lookups. On <b style="color:#f87171">page fault</b>, OS loads page using a replacement algorithm: <b>FIFO</b> (oldest), <b>LRU</b> (least recently used), <b>Optimal</b> (furthest future use). Press <b>Space</b> to step.</div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="ct">Setup</div>
+        <div style="margin-bottom:6px">
+          <label>Algorithm:</label>
+          <select id="vm-algo"><option value="fifo">FIFO</option><option value="lru">LRU</option><option value="opt">Optimal</option></select>
+          <label style="margin-left:8px">Frames:</label>
+          <select id="vm-fc" onchange="vmReset()"><option value="3">3</option><option value="4" selected>4</option></select>
+        </div>
+        <div style="margin-bottom:6px"><label>Reference string:</label><br>
+          <input type="text" id="vm-ref" value="1,2,3,4,1,2,5,1,2,3,4,5" style="width:100%;margin-top:4px">
+        </div>
+        <button onclick="vmStep()">Step &#9654;</button>
+        <button onclick="vmRunAll()">Run All &#9889;</button>
+        <button onclick="vmReset()">&#8635; Reset</button>
+        <span class="hint">&nbsp;(or press Space)</span>
+      </div>
+      <div class="card">
+        <div class="ct">Reference String</div>
+        <div id="vm-refs" class="ref-wrap"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Physical Frames</div>
+        <div id="vm-frames" style="display:grid;gap:6px;margin-bottom:10px"></div>
+        <div id="vm-stats" class="statg"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="proc-panel">
+        <div class="proc-title">&#9654; Page Access Process</div>
+        <div id="vm-proc"></div>
+      </div>
+      <div class="card">
+        <div class="ct">TLB (Translation Lookaside Buffer)</div>
+        <table><thead><tr><th>VPN</th><th>PFN</th><th>Age</th></tr></thead><tbody id="vm-tlb"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="ct">Replacement History</div>
+        <div style="overflow-x:auto;max-height:200px;overflow-y:auto">
+          <table><thead id="vm-hh"></thead><tbody id="vm-hb"></tbody></table>
+        </div>
+      </div>
+      <div class="card"><div class="ct">Event Log</div><div id="vm-log" class="log"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ALLOCATION ═══ -->
+<div id="al" class="page">
+  <div class="theory"><b>Allocation Strategies:</b> <b>First Fit</b> &mdash; pick first hole that fits (fast, O(n)). <b>Best Fit</b> &mdash; smallest sufficient hole (less waste, but slow). <b>Worst Fit</b> &mdash; largest hole (leaves bigger remainders). Free then <b>coalesce</b> neighbours. <b>Compact</b> to eliminate external fragmentation.</div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="ct">Memory Map (256 B)</div>
+        <div id="al-bar" class="mbar"></div>
+        <div class="ruler"><span>0</span><span>64</span><span>128</span><span>192</span><span>256</span></div>
+        <table><thead><tr><th>ID</th><th>Start</th><th>Size</th><th>Status</th></tr></thead><tbody id="al-list"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="ct">Allocate</div>
+        <div style="margin-bottom:6px">
+          <label>Strategy:</label>
+          <select id="al-algo" onchange="alInfo()"><option value="first">First Fit</option><option value="best">Best Fit</option><option value="worst">Worst Fit</option></select>
+        </div>
+        <div style="margin-bottom:6px">
+          <label>Name:</label><input type="text" id="al-name" value="P5" style="width:46px">
+          <label style="margin-left:5px">Size (B):</label><input type="number" id="al-sz" min="1" max="100" value="20">
+          <button onclick="alAlloc()" style="margin-left:4px">Allocate</button>
+        </div>
+        <select id="al-free-sel" style="width:155px"></select>
+        <button class="danger" onclick="alFree()">Free</button>
+        <button onclick="alCompact()" style="margin-left:3px">Compact</button>
+        <button onclick="alReset()">&#8635; Reset</button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="proc-panel">
+        <div class="proc-title">&#9654; Allocation Process</div>
+        <div id="al-proc"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Stats</div>
+        <div id="al-stats" class="statg"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Algorithm Info</div>
+        <div id="al-info" style="font-size:12px;color:#94a3b8;line-height:1.7"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Free Holes</div>
+        <div id="al-holes" style="font-size:11px;color:#64748b"></div>
+      </div>
+      <div class="card"><div class="ct">Event Log</div><div id="al-log" class="log"></div></div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
