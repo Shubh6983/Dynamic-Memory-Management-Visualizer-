@@ -1,0 +1,622 @@
+/* =====================================================
+   Memory Management Visualizer — Stylesheet
+   style.css
+   ===================================================== */
+
+/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --bg:        #f4f5f7;
+  --surface:   #ffffff;
+  --surface2:  #f9fafb;
+  --border:    #e2e5ea;
+  --border2:   #d0d5dd;
+  --txt:       #1a1d23;
+  --txt2:      #4b5563;
+  --txt3:      #9ca3af;
+  --accent:    #2563eb;
+  --accent-bg: #eff6ff;
+  --green:     #16a34a;
+  --green-bg:  #f0fdf4;
+  --red:       #dc2626;
+  --red-bg:    #fef2f2;
+  --amber:     #d97706;
+  --amber-bg:  #fffbeb;
+  --purple:    #7c3aed;
+  --purple-bg: #f5f3ff;
+  --mono:      'JetBrains Mono', 'Courier New', monospace;
+  --sans:      'Inter', system-ui, sans-serif;
+  --radius:    8px;
+  --radius-sm: 5px;
+  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Base ── */
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--txt);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.h-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header h1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--txt);
+  letter-spacing: -0.3px;
+}
+
+header p {
+  font-size: 12px;
+  color: var(--txt3);
+  margin-top: 1px;
+}
+
+/* =====================================================
+   TABS
+   ===================================================== */
+.tabs {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--txt3);
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tab:hover {
+  color: var(--txt2);
+}
+
+.tab.on {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* =====================================================
+   PAGE / LAYOUT
+   ===================================================== */
+.page {
+  display: none;
+  padding: 24px 28px;
+  max-width: 1400px;
+}
+
+.page.on {
+  display: block;
+}
+
+.row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* Card title */
+.ct {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--txt3);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* =====================================================
+   THEORY BOX
+   ===================================================== */
+.theory {
+  background: var(--accent-bg);
+  border: 1px solid #bfdbfe;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: #1e3a5f;
+  line-height: 1.65;
+}
+
+.theory b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* =====================================================
+   FORMS
+   ===================================================== */
+label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--txt2);
+  margin-right: 6px;
+}
+
+input,
+select {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--txt);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: var(--mono);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+
+input[type="number"] {
+  width: 72px;
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--sans);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--txt2);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s, box-shadow 0.12s;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: var(--bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button.danger {
+  border-color: #fca5a5;
+  color: var(--red);
+  background: var(--red-bg);
+}
+
+button.danger:hover {
+  background: #fee2e2;
+  border-color: var(--red);
+}
+
+/* =====================================================
+   BADGES
+   ===================================================== */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+
+.b-blue   { background: var(--accent-bg);  color: var(--accent);  border: 1px solid #bfdbfe; }
+.b-green  { background: var(--green-bg);   color: var(--green);   border: 1px solid #bbf7d0; }
+.b-amber  { background: var(--amber-bg);   color: var(--amber);   border: 1px solid #fde68a; }
+.b-purple { background: var(--purple-bg);  color: var(--purple);  border: 1px solid #ddd6fe; }
+.b-red    { background: var(--red-bg);     color: var(--red);     border: 1px solid #fecaca; }
+
+/* =====================================================
+   STAT GRID
+   ===================================================== */
+.statg {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.statb {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.statv {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--txt);
+  line-height: 1;
+}
+
+.statl {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--txt3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* =====================================================
+   EVENT LOG
+   ===================================================== */
+.log {
+  background: #1e1e2e;
+  border: 1px solid #2d2d3e;
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.le {
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  line-height: 1.5;
+}
+
+.lok   { color: #86efac; }
+.lerr  { color: #fca5a5; }
+.linfo { color: #93c5fd; }
+.lw    { color: #fcd34d; }
+
+/* =====================================================
+   MEMORY BAR
+   ===================================================== */
+.mbar {
+  height: 32px;
+  display: flex;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 6px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.04);
+}
+
+.ruler {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--txt3);
+  font-family: var(--mono);
+  margin-bottom: 8px;
+}
+
+/* =====================================================
+   PAGING — PAGE TABLE ROWS
+   ===================================================== */
+.ptrow {
+  display: grid;
+  grid-template-columns: 64px 64px 24px 1fr;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 4px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+  transition: background 0.1s;
+}
+
+.ptrow:last-child  { border: none; }
+.ptrow:hover       { background: var(--surface2); border-radius: 4px; }
+
+/* =====================================================
+   TABLES
+   ===================================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+th {
+  text-align: left;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--sans);
+  color: var(--txt3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--border);
+  background: var(--surface2);
+}
+
+td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--txt2);
+}
+
+tr:last-child td { border: none; }
+tr:hover td      { background: var(--surface2); }
+
+/* =====================================================
+   VIRTUAL MEMORY — FRAME BOXES & REFS
+   ===================================================== */
+.sframe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  height: 60px;
+  font-family: var(--mono);
+  transition: all 0.25s ease;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.sf-empty {
+  background: var(--surface2);
+  color: var(--txt3);
+  border-style: dashed;
+}
+
+.sf-on {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: #93c5fd;
+  border-style: solid;
+}
+
+.ref-wrap {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.rp {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--txt3);
+  transition: all 0.2s;
+}
+
+.rp.cur {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(37,99,235,.35);
+}
+
+.rp.hit {
+  background: var(--green-bg);
+  border-color: #86efac;
+  color: var(--green);
+}
+
+.rp.fault {
+  background: var(--red-bg);
+  border-color: #fca5a5;
+  color: var(--red);
+}
+
+/* =====================================================
+   PROCESS PANEL
+   ===================================================== */
+.proc-panel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.proc-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.proc-title::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.3; }
+}
+
+/* ── Steps ── */
+.step {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.step.done,
+.step.active {
+  opacity: 1;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--txt3);
+  background: var(--surface);
+  margin-top: 1px;
+}
+
+.step.done .step-num {
+  background: var(--green-bg);
+  border-color: #86efac;
+  color: var(--green);
+}
+
+.step.active .step-num {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+.step-body    { flex: 1; }
+
+.step-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--txt3);
+  margin-bottom: 2px;
+}
+
+.step.done .step-lbl   { color: var(--txt); }
+.step.active .step-lbl { color: var(--accent); }
+
+.step-det {
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--txt3);
+  line-height: 1.55;
+}
+
+.step.done .step-det   { color: var(--txt2); }
+.step.active .step-det { color: var(--txt2); }
+
+/* ── Inline value chips inside steps ── */
+.iv {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.iv-b { background: var(--accent-bg);  color: var(--accent);  }
+.iv-g { background: var(--green-bg);   color: var(--green);   }
+.iv-a { background: var(--amber-bg);   color: var(--amber);   }
+.iv-r { background: var(--red-bg);     color: var(--red);     }
+.iv-p { background: var(--purple-bg);  color: var(--purple);  }
+
+/* =====================================================
+   MISC UTILITIES
+   ===================================================== */
+.mono { font-family: var(--mono); font-size: 12px; }
+.hint { font-size: 11px; color: var(--txt3); font-family: var(--mono); }
