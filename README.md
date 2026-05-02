@@ -1,23 +1,138 @@
-# Dynamic-Memory-Management-Visualizer-
-An interactive OS project visualizing memory management concepts including Paging, Segmentation, Virtual Memory, and Allocation strategies with real-time step-by-step simulation and algorithm comparison (FIFO, LRU, Optimal).
-🧠 Dynamic Memory Management Visualizer
+# 🧠 Dynamic Memory Management Visualizer
 
-A web-based interactive tool to simulate and visualize how Operating Systems manage memory internally. This project helps students clearly understand complex concepts like paging, segmentation, and virtual memory through real-time animations and simulations.
+An **interactive Operating System project** that visualizes memory management concepts such as **Paging, Segmentation, Virtual Memory, and Allocation strategies** with real-time step-by-step simulation and algorithm comparison (FIFO, LRU, Optimal).
 
-🚀 Project Overview
+---
 
-The Dynamic Memory Management Visualizer is designed as a Single Page Application (SPA) that demonstrates core OS memory management techniques.
+## 🚀 Live Demo
 
-It allows users to:
+👉 https://shubh6983.github.io/Dynamic-Memory-Management-Visualizer-/
 
-Simulate memory allocation Visualize address translation Observe page faults and replacements Understand fragmentation and allocation strategies 🧩 Features 📌 Paging & Virtual Memory Simulator Logical → Physical address mapping Page Table visualization Page fault detection FIFO & LRU page replacement algorithms Hit/Miss tracking with fault rate 📌 Segmentation & Dynamic Allocation Simulator Segment Table (Base + Limit) Memory allocation strategies: First Fit Best Fit Worst Fit Internal & External Fragmentation Free space management & hole merging ⚙️ Technologies Used Frontend: HTML5, CSS (Tailwind), JavaScript (ES6+) Visualization: Canvas API Icons & UI: Lucide Icons, Google Fonts Version Control: GitHub
+---
 
-🏗️ Project Structure Memory-Management-Visualizer/ │── index.html │── style.css │── script.js │── README.md
+## 📌 Project Overview
 
-🔄 Core Modules
+This is a **web-based interactive simulator** designed to help students understand how Operating Systems manage memory internally.
 
-Paging Simulator (PagingSim) Manages page table & frames Handles page faults Implements FIFO & LRU
-Segmentation Simulator (SegmentSim) Manages memory blocks Implements allocation strategies Tracks fragmentation 🧮 Algorithms Implemented FIFO (First-In-First-Out) Replaces the oldest page in memory LRU (Least Recently Used) Replaces the least recently accessed page 📊 Functionalities 📌 Paging Module Custom memory setup Page table + frame table visualization Page fault logs and statistics 📌 Segmentation Module Real-time memory map Allocation & deallocation Fragmentation analysis 🔗 Live Project
-🎯 Use Case Students learning Operating Systems Visual learners Academic demos 📈 Future Enhancements Paging + Segmentation hybrid model Clock Algorithm TLB simulation Buddy Memory Allocation Export logs as PDF 📚 References MDN Web Docs W3C Standards Operating System Concepts – Silberschatz GeeksforGeeks 📌 Conclusion
+It provides:
 
-This project makes OS memory concepts easier to understand through interactive visualization.
+* Real-time visualization
+* Step-by-step execution
+* Practical understanding of theoretical concepts
+
+---
+
+## 🧩 Features
+
+### 📌 Paging & Virtual Memory
+
+* Logical → Physical address translation
+* Page table visualization
+* Page fault detection
+* Page replacement algorithms:
+
+  * FIFO (First-In-First-Out)
+  * LRU (Least Recently Used)
+  * Optimal
+* Hit/Miss tracking & fault rate
+
+---
+
+### 📌 Segmentation & Memory Allocation
+
+* Segment table (Base + Limit)
+* Allocation strategies:
+
+  * First Fit
+  * Best Fit
+  * Worst Fit
+* Internal & External fragmentation
+* Free space management & hole merging
+
+---
+
+### 📌 Visualization & Interaction
+
+* Step-by-step process panel
+* Real-time memory map
+* Event logs & statistics
+* Interactive UI controls
+
+---
+
+## 🧮 Algorithms Implemented
+
+* **FIFO** – Replaces the oldest page
+* **LRU** – Replaces least recently used page
+* **Optimal** – Replaces page used farthest in future
+* **First Fit / Best Fit / Worst Fit** – Allocation strategies
+
+---
+
+## 🛠️ Technologies Used
+
+* **Frontend:** HTML5, CSS3, JavaScript (ES6)
+* **Visualization:** DOM + UI rendering
+* **Styling:** Custom CSS + Google Fonts
+* **Version Control:** Git & GitHub
+
+---
+
+## 📂 Project Structure
+
+Dynamic-Memory-Management-Visualizer/
+│── index.html
+│── style.css
+│── script.js
+│── README.md
+
+---
+
+## 🎯 Use Cases
+
+* 📚 Students learning Operating Systems
+* 🧠 Visual learners
+* 🎓 Academic projects & demos
+
+---
+
+## 📊 Key Highlights
+
+* 🔥 Interactive OS simulation
+* 📈 Real-time statistics (faults, utilization, fragmentation)
+* 🧩 Covers multiple OS concepts in one tool
+* 💡 Easy-to-understand visual learning
+
+---
+
+## 📈 Future Enhancements
+
+* Clock Page Replacement Algorithm
+* TLB (Translation Lookaside Buffer) simulation
+* Hybrid Paging + Segmentation model
+* Export logs as PDF
+* Performance graphs & analytics
+
+---
+
+## 📚 References
+
+* MDN Web Docs
+* W3C Standards
+* Operating System Concepts – Silberschatz
+* GeeksforGeeks
+
+---
+
+## 👨‍💻 Author
+
+**Shubh Ravichandran**
+Computer Science Student
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub!
+
+---
