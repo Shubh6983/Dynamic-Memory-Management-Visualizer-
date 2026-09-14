@@ -126,7 +126,7 @@ Dynamic-Memory-Management-Visualizer/
 
 ## 👨‍💻 Author
 
-**Shubh Ravichandran**
+**Kumar Shubh**
 Computer Science Student
 
 ---
